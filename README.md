@@ -1,5 +1,7 @@
 # BettaPay Frontend (Next.js)
 
+**Live Deployment:** [https://betta-pay-frontend.vercel.app/](https://betta-pay-frontend.vercel.app/)
+
 BettaPay frontend — a Next.js 14 TypeScript app built as part of a Turborepo workspace. This package implements the merchant-facing UI for non-custodial payments (Stellar/Soroban integration) and is intended to be run as the frontend app inside a monorepo.
 
 ## Included in this package
