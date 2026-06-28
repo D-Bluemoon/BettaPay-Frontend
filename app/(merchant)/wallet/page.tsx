@@ -21,6 +21,7 @@ import {
 import { EmptyState } from "@/components/shared/EmptyState";
 import { useNotify } from "@/lib/hooks/useNotify";
 import { useAuthStore } from "@/lib/store/authStore";
+import Image from "next/image";
 
 const mockTxHistory = [
   {
@@ -86,9 +87,11 @@ export default function WalletPage() {
         <div className="relative">
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-2">
-              <img
+              <Image
                 src="/logo.png"
                 alt=""
+                width={32}
+                height={32}
                 className="w-8 h-8 rounded-lg object-contain bg-slate-800"
               />
               <span className="font-bold text-lg">BettaPay</span>
