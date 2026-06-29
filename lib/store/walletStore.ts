@@ -1,20 +1,31 @@
 import { create } from 'zustand';
 import { AssetBalance } from '../types';
 import { connectFreighter } from '@/lib/stellar/freighter';
-import { HORIZON_URL } from '../utils/constants';
 
 type Connector = 'freighter' | 'walletconnect' | null;
+
+const NETWORK_URLS: Record<string, string> = {
+  testnet: 'https://horizon-testnet.stellar.org',
+  public: 'https://horizon.stellar.org',
+};
+
+function getNetwork(): 'testnet' | 'public' {
+  const val = (process.env.NEXT_PUBLIC_STELLAR_NETWORK || 'testnet').toLowerCase();
+  if (val === 'mainnet' || val === 'public') return 'public';
+  return 'testnet';
+}
 
 interface WalletState {
   address: string | null;
   isConnected: boolean;
   connector: Connector;
-  network: 'mainnet' | 'testnet';
+  network: 'testnet' | 'public';
   balances: AssetBalance[];
   loading: boolean;
   error: string | null;
   connect: (connector?: Connector) => Promise<void>;
   disconnect: () => void;
+  setNetwork: (network: 'testnet' | 'public') => void;
   refreshBalances: () => Promise<void>;
 }
 
@@ -22,7 +33,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
   address: null,
   isConnected: false,
   connector: null,
-  network: (process.env.NEXT_PUBLIC_STELLAR_NETWORK as 'mainnet' | 'testnet') || 'testnet',
+  network: getNetwork(),
   balances: [],
   loading: false,
   error: null,
@@ -58,14 +69,21 @@ export const useWalletStore = create<WalletState>((set, get) => ({
     set({ address: null, isConnected: false, connector: null, balances: [], loading: false, error: null });
   },
 
+  setNetwork: (network: 'testnet' | 'public') => {
+    set({ network });
+    get().refreshBalances();
+  },
+
   refreshBalances: async () => {
-    const { address } = get();
+    const { address, network } = get();
     if (!address) return;
 
     set({ loading: true, error: null });
 
+    const horizonUrl = NETWORK_URLS[network];
+
     try {
-      const response = await fetch(`${HORIZON_URL}/accounts/${address}`);
+      const response = await fetch(`${horizonUrl}/accounts/${address}`);
 
       if (!response.ok) {
         if (response.status === 404) {
