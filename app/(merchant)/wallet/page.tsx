@@ -18,6 +18,7 @@ import { useWalletStore } from "@/lib/store/walletStore";
 import Image from "next/image";
 import { memo } from "react";
 import { mockTxHistory, type WalletTx } from "@/lib/mock/wallet";
+import { memo, useEffect, useState } from "react";
 
 interface WalletTx {
   id: string;

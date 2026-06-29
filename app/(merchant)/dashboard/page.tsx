@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useCallback, memo } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { DashboardSkeleton } from '@/components/skeletons/DashboardSkeleton';
 import { CurrencyDisplay } from '@/components/shared/CurrencyDisplay';
 import { StatusBadge } from '@/components/shared/StatusBadge';
 import { StatCard } from '@/components/shared/StatCard';
@@ -174,6 +176,9 @@ const StatCards = memo(function StatCards({ error, onRetry }: StatCardsProps) {
 export default function DashboardPage() {
   const { user } = useAuthStore();
   const notify = useNotify();
+
+const [isLoading, setIsLoading] = useState(true);
+  const [activePeriod, setActivePeriod] = useState<Period>('7D');
   const [selectedTx, setSelectedTx] = useState<Transaction | null>(null);
 
   // Error simulation states
@@ -185,13 +190,22 @@ export default function DashboardPage() {
 
   const firstName = user?.name?.split(' ')[0] ?? 'Merchant';
 
-  const handleCopy = useCallback(
+const handleCopy = useCallback(
     (text: string) => {
       navigator.clipboard.writeText(text);
       notify.success('Copied to clipboard');
     },
     [notify]
   );
+useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleCopy = useCallback((text: string) => {
+  }, [notify]);
+  const handlePeriodChange = useCallback((p: Period) => {
+    setActivePeriod(p);
 
   const toggleSimulation = () => {
     const nextState = !simulationEnabled;
@@ -204,7 +218,10 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8 pb-8">
-
+      {isLoading ? (
+        <DashboardSkeleton />
+      ) : (
+        <>
       {/* ── Welcome Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -583,7 +600,8 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      <TransactionDetail
+<TransactionDetail
+</>)}
         transaction={selectedTx}
         isOpen={!!selectedTx}
         onClose={() => setSelectedTx(null)}
