@@ -1,5 +1,6 @@
 "use client";
 
+import { useTheme } from "next-themes";
 import {
   ResponsiveContainer,
   BarChart,
@@ -26,6 +27,9 @@ interface PlatformVolumeChartProps {
 export default function PlatformVolumeChart({
   height = 300,
 }: PlatformVolumeChartProps) {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+
   return (
     <div className="w-full" style={{ height }}>
       <ResponsiveContainer width="100%" height="100%">
@@ -47,9 +51,9 @@ export default function PlatformVolumeChart({
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: "var(--card)",
-              borderColor: "var(--border)",
-              color: "var(--foreground)",
+              backgroundColor: isDark ? "#1E293B" : "#FFFFFF",
+              borderColor: isDark ? "#334155" : "#E2E8F0",
+              color: isDark ? "#F8FAFC" : "#0F172A",
             }}
             cursor={{ fill: "var(--accent)" }}
           />
