@@ -21,6 +21,7 @@ import { getStellarExplorerTxUrl } from '@/lib/utils/explorer';
 import { EmptyState } from '@/components/shared/EmptyState';
 import { useOfflineStore } from '@/lib/store/offlineStore';
 import { SettlementConfirmation } from '@/components/settlement/SettlementConfirmation';
+import { StatCard } from '@/components/shared/StatCard';
 import { memo } from 'react';
 import { mockSettlements, type Settlement } from '@/lib/mock/settlements';
 
@@ -95,6 +96,22 @@ export default function SettlementPage() {
 
       {/* Balance summary */}
       <div className="grid gap-3 grid-cols-2 sm:grid-cols-3">
+        <StatCard
+          title="Available to Settle"
+          value={<CurrencyDisplay amount={12450.00} />}
+          color="amber"
+          trend={{ label: "≈ ₦19,297,500" }}
+        />
+        <StatCard
+          title="Pending Settlement"
+          value={<CurrencyDisplay amount={8200.50} />}
+          trend={{ icon: Clock, label: "Processing", color: "text-primary" }}
+        />
+        <StatCard
+          title="Total Settled (30d)"
+          value={<CurrencyDisplay amount={38750.00} />}
+          trend={{ icon: CheckCircle2, label: "All completed", color: "text-emerald-600" }}
+        />
         <Card className="border border-border border-t-2 border-t-amber-200 bg-card shadow-sm">
           <CardHeader className="pb-2 relative">
             <CardTitle className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Available to Settle</CardTitle>

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { CurrencyDisplay } from '@/components/shared/CurrencyDisplay';
 import { StatusBadge } from '@/components/shared/StatusBadge';
+import { StatCard } from '@/components/shared/StatCard';
 import { ErrorDisplay } from '@/components/shared/ErrorDisplay';
 import {
   ArrowUpRight,
@@ -250,6 +251,34 @@ export default function DashboardPage() {
           </div>
         ) : (
           <>
+            <StatCard
+              title="Total Volume (30d)"
+              icon={Activity}
+              color="amber"
+              value={<CurrencyDisplay amount={45231.89} />}
+              trend={{ icon: ArrowUpRight, label: "+20.1% from last month", color: "text-emerald-600" }}
+            />
+            <StatCard
+              title="Active Payment Links"
+              icon={CreditCard}
+              color="blue"
+              value="12"
+              trend={{ label: "+3 new links this week" }}
+            />
+            <StatCard
+              title="Available to Settle"
+              icon={Wallet}
+              color="emerald"
+              value={<CurrencyDisplay amount={12450.00} />}
+              trend={{ icon: ArrowDownRight, label: "Pending NGN conversion", color: "text-primary" }}
+            />
+            <StatCard
+              title="Current FX Rate"
+              icon={RefreshCcw}
+              color="purple"
+              value="₦1,550"
+              trend={{ label: "per USDC · Updated 5m ago" }}
+            />
             {/* Card 1 */}
             <Card className="relative overflow-hidden border border-border bg-card shadow-sm hover:shadow-md transition-shadow">
               <div className="absolute inset-0 bg-gradient-to-br from-amber-50/60 to-transparent pointer-events-none" />
