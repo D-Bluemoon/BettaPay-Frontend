@@ -1,3 +1,5 @@
+/* eslint-disable react/display-name, @typescript-eslint/no-explicit-any, @typescript-eslint/no-require-imports, @typescript-eslint/no-unused-vars */
+
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -121,7 +123,7 @@ describe('Authentication Form Validation & Accessibility Tests', () => {
       await user.click(submitBtn);
 
       await waitFor(() => {
-        expect(screen.getByText('Password must be at least 8 characters')).toBeInTheDocument();
+        expect(screen.getByText(/Password must include:/i)).toBeInTheDocument();
       });
 
       expect(passwordInput).toHaveAttribute('aria-invalid', 'true');
@@ -153,7 +155,7 @@ describe('Authentication Form Validation & Accessibility Tests', () => {
       render(<LoginPage />);
 
       await user.type(screen.getByLabelText(/Email Address/i), 'user@example.com');
-      await user.type(screen.getByLabelText(/Password/i), 'securepassword123');
+      await user.type(screen.getByLabelText(/Password/i), 'SecurePwd1!');
       await user.click(screen.getByRole('button', { name: /Sign In/i }));
 
       await waitFor(() => {
@@ -179,7 +181,7 @@ describe('Authentication Form Validation & Accessibility Tests', () => {
         expect(screen.getByText('Business name must be at least 2 characters')).toBeInTheDocument();
         expect(screen.getByText('Please enter a valid email address')).toBeInTheDocument();
         expect(screen.getByText('Country is required')).toBeInTheDocument();
-        expect(screen.getByText('Password must be at least 8 characters')).toBeInTheDocument();
+        expect(screen.getByText(/Password must include:/i)).toBeInTheDocument();
       });
 
       expect(businessNameInput).toHaveAttribute('aria-invalid', 'true');
@@ -208,7 +210,7 @@ describe('Authentication Form Validation & Accessibility Tests', () => {
       await user.type(businessNameInput, 'Stellar Biz');
       await user.type(emailInput, 'stellar@biz.com');
       await user.selectOptions(select, 'NG');
-      await user.type(passwordInput, 'validpassword123');
+      await user.type(passwordInput, 'ValidPwd1!');
 
       await user.click(submitBtn);
 

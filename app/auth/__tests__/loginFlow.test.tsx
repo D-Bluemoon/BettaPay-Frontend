@@ -1,3 +1,5 @@
+/* eslint-disable react/display-name, @typescript-eslint/no-explicit-any */
+
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -85,7 +87,7 @@ describe('Login Flow Integration Tests', () => {
     render(<LoginPage />);
 
     await user.type(screen.getByLabelText(/Email Address/i), 'merchant@example.com');
-    await user.type(screen.getByLabelText(/Password/i), 'password123');
+    await user.type(screen.getByLabelText(/Password/i), 'Password1!');
     await user.click(screen.getByRole('button', { name: /Sign In/i }));
 
     await waitFor(() => {
@@ -120,7 +122,7 @@ describe('Login Flow Integration Tests', () => {
     render(<LoginPage />);
 
     await user.type(screen.getByLabelText(/Email Address/i), 'superadmin@company.com');
-    await user.type(screen.getByLabelText(/Password/i), 'password123');
+    await user.type(screen.getByLabelText(/Password/i), 'Password1!');
     await user.click(screen.getByRole('button', { name: /Sign In/i }));
 
     await waitFor(() => {
@@ -185,7 +187,7 @@ describe('Login Flow Integration Tests', () => {
     render(<LoginPage />);
 
     await user.type(screen.getByLabelText(/Email Address/i), 'fail@example.com');
-    await user.type(screen.getByLabelText(/Password/i), 'password123');
+    await user.type(screen.getByLabelText(/Password/i), 'Password1!');
     await user.click(screen.getByRole('button', { name: /Sign In/i }));
 
     // Session fetch failure is caught internally and execution continues (login still called)
